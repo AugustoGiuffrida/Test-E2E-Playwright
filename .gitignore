@@ -4,6 +4,7 @@ target/
 # Variables de entorno locales: nunca versionar credenciales
 .env
 .env.*
+!.env.example
 
 # Artefactos de Playwright (pueden contener datos de la cuenta o de la sesión)
 *.zip
