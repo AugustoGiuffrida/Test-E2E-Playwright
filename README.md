@@ -71,7 +71,8 @@ En Linux, si faltan dependencias del sistema, usar `-Dexec.args="install --with-
 ./run.sh
 ```
 
-`run.sh` carga SDKMAN si `java` no está en el `PATH` y ejecuta `./mvnw -Dtest=BibliotecaTest test`.
+`run.sh` carga SDKMAN si `java` no funciona (en macOS, `/usr/bin/java` existe aunque no haya un
+JDK configurado) y ejecuta `./mvnw -Dtest=BibliotecaTest test`.
 Los argumentos extra se pasan a Maven. Por defecto el navegador se ve; para correr sin ventana:
 
 ```bash
