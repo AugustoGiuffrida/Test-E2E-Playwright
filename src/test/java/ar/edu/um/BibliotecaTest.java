@@ -30,7 +30,7 @@ class BibliotecaTest {
     private static final String TABLA_RESULTADOS = "Resultados";
     private static final Pattern TITULO_LIBRO = Pattern.compile("^UML y patrones\\b", Pattern.CASE_INSENSITIVE);
     private static final String VERIFICACION_FALLIDA = "Verificación fallida";
-    // ISBN de UML y patrones, 2a ed. (Larman). El catálogo lo carga con guiones en un
+    // ISBN de UML y patrones, 2a ed. (Larman). El catalogo lo carga con guiones en un
     // registro (84-205-3438-2) y sin guiones en otro (8420534382): se aceptan las dos formas
     private static final Pattern ISBN_LIBRO = Pattern.compile("^84-?205-?3438-?2$");
 
@@ -47,7 +47,7 @@ class BibliotecaTest {
                 try {
                     Page page = context.newPage();
 
-                    // 1. Entrar a la página de la biblioteca
+                    // 1. Entrar a la pagina de la biblioteca
                     page.navigate(URL_BIBLIOTECA,
                         new Page.NavigateOptions().setWaitUntil(WaitUntilState.DOMCONTENTLOADED));
 
@@ -69,19 +69,19 @@ class BibliotecaTest {
         page.getByRole(AriaRole.LINK,
             new Page.GetByRoleOptions().setName(ENLACE_PORTAL).setExact(true)).click();
 
-        // 3. Hacer clic en "Consultá nuestro catálogo"
+        // 3. Hacer clic en "Consulta nuestro catalogo"
         page.getByRole(AriaRole.LINK,
             new Page.GetByRoleOptions().setName(ENLACE_CATALOGO).setExact(true)).click();
 
-        // 4. Confirmar que ya se está en el catálogo: el portal también tiene un cuadro de
-        //    texto (búsqueda de noticias) y no hay que escribir ahí
+        // 4. Confirmar que ya se esta en el catalogo: el portal tambien tiene un cuadro de
+        //    texto (busqueda de noticias) y no hay que escribir ahi
         assertThat(page.getByRole(AriaRole.LINK,
             new Page.GetByRoleOptions().setName(ENLACE_BUSQUEDA_AVANZADA).setExact(true))).isVisible();
     }
 
     private static void buscarLibro(Page page) {
-        // 5. Escribir el título en el cuadro de búsqueda (no tiene etiqueta; es el único
-        //    cuadro de texto del catálogo)
+        // 5. Escribir el titulo en el cuadro de busqueda (no tiene etiqueta; es el unico
+        //    cuadro de texto del catalogo)
         page.getByRole(AriaRole.TEXTBOX).fill(LIBRO);
 
         // 6. Hacer clic en "Buscar"
@@ -93,10 +93,10 @@ class BibliotecaTest {
         Locator cantidad = page.getByRole(AriaRole.HEADING,
             new Page.GetByRoleOptions().setName(CANTIDAD_RESULTADOS).setLevel(1));
 
-        // 7. Esperar los resultados o el rechazo de la verificación anti-bots. El catálogo
-        //    pasa la búsqueda por esa verificación, que puede tardar unos segundos y que
+        // 7. Esperar los resultados o el rechazo de la verificacion anti-bots. El catalogo
+        //    pasa la busqueda por esa verificacion, que puede tardar unos segundos y que
         //    rechaza a los navegadores automatizados. La prueba no la elude: si la rechaza,
-        //    guarda una captura y falla informándolo.
+        //    guarda una captura y falla informandolo.
         Locator rechazo = page.getByText(VERIFICACION_FALLIDA);
         assertThat(cantidad.or(rechazo).first())
             .isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(15_000));
@@ -108,10 +108,10 @@ class BibliotecaTest {
                 + rechazo.first().innerText().trim() + "). La prueba no intenta eludirla.");
         }
 
-        // 8. Comprobar el encabezado "Su búsqueda retornó N resultados."
+        // 8. Comprobar el encabezado "Su busqueda retorno N resultados."
         assertThat(cantidad).isVisible();
 
-        // 9. Comprobar que en la tabla de resultados haya un título que empiece con
+        // 9. Comprobar que en la tabla de resultados haya un titulo que empiece con
         //    "UML y patrones" y guardar la captura
         Locator resultados = page.getByRole(AriaRole.TABLE,
             new Page.GetByRoleOptions().setName(TABLA_RESULTADOS).setExact(true));
