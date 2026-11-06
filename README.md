@@ -14,6 +14,11 @@ Recorrido:
    de texto del catálogo) y pulsa **Buscar**.
 4. Verifica el encabezado "Su búsqueda retornó N resultados." y que la tabla **Resultados**
    tenga un título que empiece con "UML y patrones".
+5. Abre la ficha de ese libro y verifica que el ISBN sea el de *UML y patrones* 2a ed.
+   (84-205-3438-2). El catálogo lo tiene cargado con guiones en un registro y sin guiones en
+   otro (8420534382); la prueba acepta las dos formas.
+
+En el código, cada acción está numerada en un comentario (pasos 1 a 11).
 
 ## Estructura
 
@@ -76,7 +81,9 @@ Los argumentos extra se pasan a Maven. Por defecto el navegador se ve; para corr
 ## Resultado y evidencia
 
 - Resultado de Maven en la consola y en `target/surefire-reports/`.
-- Si la búsqueda funciona: captura de los resultados en `target/evidencia/biblioteca.png`.
+- Si la búsqueda funciona: captura de los resultados en
+  `target/evidencia/biblioteca-resultados.png` y de la ficha del libro con el ISBN en
+  `target/evidencia/biblioteca-ficha.png`.
 - Si el catálogo rechaza la búsqueda: captura del rechazo en
   `target/evidencia/biblioteca-rechazo.png`.
 
