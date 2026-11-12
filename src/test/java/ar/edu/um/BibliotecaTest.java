@@ -110,20 +110,9 @@ class BibliotecaTest {
         //    pasa la busqueda por esa verificacion, que puede tardar unos segundos y que
         //    rechaza a los navegadores automatizados. La prueba no la elude: si la rechaza,
         //    guarda una captura y falla informandolo.
-        //    Si en 15 segundos no aparece ninguno de los dos, guarda una captura de lo que
-        //    quedo en pantalla y falla indicando en que direccion estaba.
         Locator rechazo = page.getByText(VERIFICACION_FALLIDA);
-        try {
-            assertThat(cantidad.or(rechazo).first())
-                .isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(15_000));
-        } catch (AssertionError sinRespuesta) {
-            page.screenshot(new Page.ScreenshotOptions()
-                .setPath(Paths.get("target", "evidencia", "biblioteca-espera.png"))
-                .setFullPage(true));
-            fail("En 15 segundos no aparecieron ni los resultados ni el rechazo de la verificación"
-                + " anti-bots. La página quedó en " + page.url()
-                + " (captura en target/evidencia/biblioteca-espera.png).", sinRespuesta);
-        }
+        assertThat(cantidad.or(rechazo).first())
+            .isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(15_000));
         if (rechazo.isVisible()) {
             page.screenshot(new Page.ScreenshotOptions()
                 .setPath(Paths.get("target", "evidencia", "biblioteca-rechazo.png"))

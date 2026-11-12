@@ -102,9 +102,6 @@ reemplaza las esperas de la prueba.
   `target/evidencia/biblioteca-ficha.png`.
 - Si el catálogo rechaza la búsqueda: captura del rechazo en
   `target/evidencia/biblioteca-rechazo.png`.
-- Si en 15 segundos no aparecen ni los resultados ni el rechazo: captura de lo que quedó en
-  pantalla en `target/evidencia/biblioteca-espera.png`, y el mensaje de error indica la
-  dirección de la página.
 
 `target/` no se versiona.
 
