@@ -18,7 +18,7 @@ Recorrido:
    (84-205-3438-2). El catálogo lo tiene cargado con guiones en un registro y sin guiones en
    otro (8420534382); la prueba acepta las dos formas.
 
-En el código, cada acción está numerada en un comentario (pasos 1 a 11).
+En el código, cada acción está numerada en un comentario (pasos 1 a 12).
 
 ## Estructura
 
@@ -77,6 +77,13 @@ Los argumentos extra se pasan a Maven. Por defecto el navegador se ve; para corr
 
 ```bash
 ./run.sh -Dheadless=true
+```
+
+Con el navegador visible, al final la ficha del libro queda 5 segundos en pantalla antes de
+cerrarse (sin ventana no hay pausa). Para cambiar la duración, en milisegundos:
+
+```bash
+./run.sh -DpausaFinal=10000
 ```
 
 ## Resultado y evidencia

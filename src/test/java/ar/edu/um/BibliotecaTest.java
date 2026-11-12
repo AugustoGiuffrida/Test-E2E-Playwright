@@ -39,6 +39,9 @@ class BibliotecaTest {
     @Test
     void encuentraElLibroUmlYPatrones() {
         boolean headless = Boolean.getBoolean("headless");
+        // Milisegundos que queda abierta la ficha al final para poder verla. Por defecto 5
+        // segundos si el navegador se ve y 0 sin ventana. Se cambia con -DpausaFinal=10000
+        int pausaFinal = Integer.getInteger("pausaFinal", headless ? 0 : 5_000);
 
         try (Playwright playwright = Playwright.create()) {
             Browser browser = playwright.chromium().launch(
@@ -57,6 +60,10 @@ class BibliotecaTest {
                     buscarLibro(page);         // pasos 5 y 6
                     verificarResultados(page); // pasos 7 a 10
                     verificarIsbn(page);       // paso 11
+
+                    // 12. Dejar la ficha en pantalla unos segundos antes de cerrar. Es solo
+                    //     para mirarla: las verificaciones ya terminaron y no dependen de esto
+                    page.waitForTimeout(pausaFinal);
                 } finally {
                     context.close();
                 }
