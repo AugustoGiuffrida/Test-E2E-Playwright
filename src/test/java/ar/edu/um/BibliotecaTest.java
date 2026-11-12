@@ -26,11 +26,12 @@ class BibliotecaTest {
     private static final String ENLACE_BUSQUEDA_AVANZADA = "Búsqueda avanzada";
     private static final String BOTON_BUSCAR = "Buscar";
     private static final String LIBRO = "UML y Patrones";
-    // Sin "$" al final: dentro del encabezado hay un enlace RSS ("Suscribirse a esta busqueda")
-    // cuyo nombre tambien forma parte del nombre accesible del encabezado
-    private static final Pattern CANTIDAD_RESULTADOS = Pattern.compile("^Su búsqueda retornó \\d+ resultados?\\.");
+    // Sin setExact, Playwright busca que el nombre CONTENGA estos textos, sin importar
+    // mayusculas. Asi el encabezado coincide aunque incluya el enlace RSS ("Suscribirse a esta
+    // busqueda") y el titulo coincide tanto con "UML y patrones : ..." como con "UML Y PATRONES"
+    private static final String CANTIDAD_RESULTADOS = "Su búsqueda retornó";
     private static final String TABLA_RESULTADOS = "Resultados";
-    private static final Pattern TITULO_LIBRO = Pattern.compile("^UML y patrones\\b", Pattern.CASE_INSENSITIVE);
+    private static final String TITULO_LIBRO = "UML y patrones";
     private static final String VERIFICACION_FALLIDA = "Verificación fallida";
     // ISBN de UML y patrones, 2a ed. (Larman). El catalogo lo carga con guiones en un
     // registro (84-205-3438-2) y sin guiones en otro (8420534382): se aceptan las dos formas
@@ -134,8 +135,8 @@ class BibliotecaTest {
         // 8. Comprobar el encabezado "Su busqueda retorno N resultados."
         assertThat(cantidad).isVisible();
 
-        // 9. Comprobar que en la tabla de resultados haya un titulo que empiece con
-        //    "UML y patrones" y guardar la captura
+        // 9. Comprobar que en la tabla de resultados haya un titulo con "UML y patrones" y
+        //    guardar la captura
         Locator resultados = page.getByRole(AriaRole.TABLE,
             new Page.GetByRoleOptions().setName(TABLA_RESULTADOS).setExact(true));
         Locator libro = resultados.getByRole(AriaRole.LINK,

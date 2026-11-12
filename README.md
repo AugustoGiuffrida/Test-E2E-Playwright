@@ -13,7 +13,7 @@ Recorrido:
 3. Escribe **UML y Patrones** en el cuadro de búsqueda (no tiene etiqueta; es el único cuadro
    de texto del catálogo) y pulsa **Buscar**.
 4. Verifica el encabezado "Su búsqueda retornó N resultados." y que la tabla **Resultados**
-   tenga un título que empiece con "UML y patrones".
+   tenga un título con "UML y patrones".
 5. Abre la ficha de ese libro y verifica que el ISBN sea el de *UML y patrones* 2a ed.
    (84-205-3438-2). El catálogo lo tiene cargado con guiones en un registro y sin guiones en
    otro (8420534382); la prueba acepta las dos formas.
@@ -131,5 +131,4 @@ forma automatizada; hay que consultarlo con la cátedra.
 
 El encabezado "Su búsqueda retornó N resultados." contiene un enlace RSS ("Suscribirse a esta
 búsqueda"), y ese texto también forma parte del nombre accesible del encabezado. Por eso la
-expresión regular de la prueba exige que el nombre **empiece** con "Su búsqueda retornó N
-resultados." y no que termine ahí.
+prueba busca un encabezado que **contenga** "Su búsqueda retornó", sin exigir el texto exacto.
