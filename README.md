@@ -87,15 +87,19 @@ Los argumentos extra se pasan a Maven. Por defecto el navegador se ve; para corr
   `target/evidencia/biblioteca-ficha.png`.
 - Si el catálogo rechaza la búsqueda: captura del rechazo en
   `target/evidencia/biblioteca-rechazo.png`.
+- Si en 15 segundos no aparecen ni los resultados ni el rechazo: captura de lo que quedó en
+  pantalla en `target/evidencia/biblioteca-espera.png`, y el mensaje de error indica la
+  dirección de la página.
 
 `target/` no se versiona.
 
 ## Limitación: verificación anti-bots del catálogo
 
-Al buscar, el catálogo redirige a `/verify-captcha`. Con un navegador común la verificación se
-resuelve sola en unos segundos ("Verificando acceso…"); a Chromium controlado por Playwright,
-con o sin ventana, le responde **"Verificación fallida, por favor intentá de nuevo"** y no
-muestra resultados. No hay un desafío que una persona pueda resolver.
+El catálogo puede pasar la búsqueda por una verificación anti-bots (`/verify-captcha`). Con un
+navegador común se resuelve sola en unos segundos ("Verificando acceso…"). El 2026-11-01, a
+Chromium controlado por Playwright le respondía **"Verificación fallida, por favor intentá de
+nuevo"** y no mostraba resultados. El 2026-11-12 la búsqueda llegó directo a los resultados y
+la prueba pasó con Chromium sin ventana.
 
 La prueba **no intenta eludir** esa verificación. Espera hasta 15 segundos los resultados o el
 rechazo; si el catálogo la rechaza, guarda la captura del rechazo y falla con este mensaje:
@@ -105,7 +109,12 @@ El catálogo de la biblioteca rechazó la búsqueda con su verificación anti-bo
 (Verificación fallida, por favor intentá de nuevo). La prueba no intenta eludirla.
 ```
 
-Comprobado el 2026-11-01: con un navegador común la búsqueda devuelve 2 resultados de
-*UML y patrones* (Craig Larman, 2a ed.), en las sedes San Rafael y Central Mendoza.
-Mientras el catálogo mantenga esta verificación, la prueba no puede pasar de forma automatizada;
-hay que consultarlo con la cátedra.
+Si el catálogo vuelve a rechazar a los navegadores automatizados, la prueba no puede pasar de
+forma automatizada; hay que consultarlo con la cátedra.
+
+## Detalle: el encabezado de resultados
+
+El encabezado "Su búsqueda retornó N resultados." contiene un enlace RSS ("Suscribirse a esta
+búsqueda"), y ese texto también forma parte del nombre accesible del encabezado. Por eso la
+expresión regular de la prueba exige que el nombre **empiece** con "Su búsqueda retornó N
+resultados." y no que termine ahí.
