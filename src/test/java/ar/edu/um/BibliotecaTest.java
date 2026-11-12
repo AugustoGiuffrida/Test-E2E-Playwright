@@ -42,10 +42,13 @@ class BibliotecaTest {
         // Milisegundos que queda abierta la ficha al final para poder verla. Por defecto 5
         // segundos si el navegador se ve y 0 sin ventana. Se cambia con -DpausaFinal=10000
         int pausaFinal = Integer.getInteger("pausaFinal", headless ? 0 : 5_000);
+        // Milisegundos de demora antes de cada accion (clic, escribir, navegar) para poder
+        // seguir el recorrido con la vista. Por defecto 0. Se activa con -DslowMo=1000
+        int slowMo = Integer.getInteger("slowMo", 0);
 
         try (Playwright playwright = Playwright.create()) {
             Browser browser = playwright.chromium().launch(
-                new BrowserType.LaunchOptions().setHeadless(headless));
+                new BrowserType.LaunchOptions().setHeadless(headless).setSlowMo(slowMo));
             try {
                 BrowserContext context = browser.newContext(
                     new Browser.NewContextOptions().setViewportSize(1280, 800));

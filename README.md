@@ -86,6 +86,14 @@ cerrarse (sin ventana no hay pausa). Para cambiar la duración, en milisegundos:
 ./run.sh -DpausaFinal=10000
 ```
 
+Para seguir el recorrido con la vista, `slowMo` agrega una demora antes de cada acción (clic,
+escribir, navegar), en milisegundos. Por defecto no hay demora. Solo sirve para mirar: no
+reemplaza las esperas de la prueba.
+
+```bash
+./run.sh -DslowMo=1000
+```
+
 ## Resultado y evidencia
 
 - Resultado de Maven en la consola y en `target/surefire-reports/`.
