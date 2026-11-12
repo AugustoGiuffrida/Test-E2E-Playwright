@@ -79,20 +79,10 @@ Los argumentos extra se pasan a Maven. Por defecto el navegador se ve; para corr
 ./run.sh -Dheadless=true
 ```
 
-Con el navegador visible, al final la ficha del libro queda 5 segundos en pantalla antes de
-cerrarse (sin ventana no hay pausa). Para cambiar la duración, en milisegundos:
-
-```bash
-./run.sh -DpausaFinal=10000
-```
-
-Para seguir el recorrido con la vista, `slowMo` agrega una demora antes de cada acción (clic,
-escribir, navegar), en milisegundos. Por defecto no hay demora. Solo sirve para mirar: no
-reemplaza las esperas de la prueba.
-
-```bash
-./run.sh -DslowMo=1000
-```
+Para que se pueda seguir el recorrido con la vista, Playwright espera 1 segundo antes de cada
+acción (`setSlowMo(1000)`) y al final la ficha del libro queda 5 segundos en pantalla antes de
+cerrarse. Las dos demoras se aplican también sin ventana. Solo sirven para mirar: no reemplazan
+las esperas de la prueba.
 
 ## Resultado y evidencia
 

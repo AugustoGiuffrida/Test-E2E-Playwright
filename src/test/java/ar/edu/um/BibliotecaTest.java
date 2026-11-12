@@ -26,30 +26,19 @@ class BibliotecaTest {
     private static final String ENLACE_BUSQUEDA_AVANZADA = "Búsqueda avanzada";
     private static final String BOTON_BUSCAR = "Buscar";
     private static final String LIBRO = "UML y Patrones";
-    // Sin setExact, Playwright busca que el nombre CONTENGA estos textos, sin importar
-    // mayusculas. Asi el encabezado coincide aunque incluya el enlace RSS ("Suscribirse a esta
-    // busqueda") y el titulo coincide tanto con "UML y patrones : ..." como con "UML Y PATRONES"
     private static final String CANTIDAD_RESULTADOS = "Su búsqueda retornó";
     private static final String TABLA_RESULTADOS = "Resultados";
     private static final String TITULO_LIBRO = "UML y patrones";
     private static final String VERIFICACION_FALLIDA = "Verificación fallida";
-    // ISBN de UML y patrones, 2a ed. (Larman). El catalogo lo carga con guiones en un
-    // registro (84-205-3438-2) y sin guiones en otro (8420534382): se aceptan las dos formas
     private static final Pattern ISBN_LIBRO = Pattern.compile("^84-?205-?3438-?2$");
 
     @Test
     void encuentraElLibroUmlYPatrones() {
         boolean headless = Boolean.getBoolean("headless");
-        // Milisegundos que queda abierta la ficha al final para poder verla. Por defecto 5
-        // segundos si el navegador se ve y 0 sin ventana. Se cambia con -DpausaFinal=10000
-        int pausaFinal = Integer.getInteger("pausaFinal", headless ? 0 : 5_000);
-        // Milisegundos de demora antes de cada accion (clic, escribir, navegar) para poder
-        // seguir el recorrido con la vista. Por defecto 0. Se activa con -DslowMo=1000
-        int slowMo = Integer.getInteger("slowMo", 0);
 
         try (Playwright playwright = Playwright.create()) {
             Browser browser = playwright.chromium().launch(
-                new BrowserType.LaunchOptions().setHeadless(headless).setSlowMo(slowMo));
+                new BrowserType.LaunchOptions().setHeadless(headless).setSlowMo(1000));
             try {
                 BrowserContext context = browser.newContext(
                     new Browser.NewContextOptions().setViewportSize(1280, 800));
@@ -67,7 +56,7 @@ class BibliotecaTest {
 
                     // 12. Dejar la ficha en pantalla unos segundos antes de cerrar. Es solo
                     //     para mirarla: las verificaciones ya terminaron y no dependen de esto
-                    page.waitForTimeout(pausaFinal);
+                    page.waitForTimeout(5000);
                 } finally {
                     context.close();
                 }
