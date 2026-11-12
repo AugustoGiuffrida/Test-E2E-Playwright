@@ -13,7 +13,12 @@ Recorrido:
 3. Escribe **UML y Patrones** en el cuadro de búsqueda (no tiene etiqueta; es el único cuadro
    de texto del catálogo) y pulsa **Buscar**.
 4. Verifica el encabezado "Su búsqueda retornó N resultados." y que la tabla **Resultados**
-   tenga un título que empiece con "UML y patrones".
+   tenga un título con "UML y patrones".
+5. Abre la ficha de ese libro y verifica que el ISBN sea el de *UML y patrones* 2a ed.
+   (84-205-3438-2). El catálogo lo tiene cargado con guiones en un registro y sin guiones en
+   otro (8420534382); la prueba acepta las dos formas.
+
+En el código, cada acción está numerada en un comentario (pasos 1 a 12).
 
 ## Estructura
 
@@ -66,17 +71,25 @@ En Linux, si faltan dependencias del sistema, usar `-Dexec.args="install --with-
 ./run.sh
 ```
 
-`run.sh` carga SDKMAN si `java` no está en el `PATH` y ejecuta `./mvnw -Dtest=BibliotecaTest test`.
+`run.sh` carga SDKMAN si `java` no funciona (en macOS, `/usr/bin/java` existe aunque no haya un
+JDK configurado) y ejecuta `./mvnw -Dtest=BibliotecaTest test`.
 Los argumentos extra se pasan a Maven. Por defecto el navegador se ve; para correr sin ventana:
 
 ```bash
 ./run.sh -Dheadless=true
 ```
 
+Para que se pueda seguir el recorrido con la vista, Playwright espera 1 segundo antes de cada
+acción (`setSlowMo(1000)`) y al final la ficha del libro queda 5 segundos en pantalla antes de
+cerrarse. Las dos demoras se aplican también sin ventana. Solo sirven para mirar: no reemplazan
+las esperas de la prueba.
+
 ## Resultado y evidencia
 
 - Resultado de Maven en la consola y en `target/surefire-reports/`.
-- Si la búsqueda funciona: captura de los resultados en `target/evidencia/biblioteca.png`.
+- Si la búsqueda funciona: captura de los resultados en
+  `target/evidencia/biblioteca-resultados.png` y de la ficha del libro con el ISBN en
+  `target/evidencia/biblioteca-ficha.png`.
 - Si el catálogo rechaza la búsqueda: captura del rechazo en
   `target/evidencia/biblioteca-rechazo.png`.
 
@@ -84,10 +97,11 @@ Los argumentos extra se pasan a Maven. Por defecto el navegador se ve; para corr
 
 ## Limitación: verificación anti-bots del catálogo
 
-Al buscar, el catálogo redirige a `/verify-captcha`. Con un navegador común la verificación se
-resuelve sola en unos segundos ("Verificando acceso…"); a Chromium controlado por Playwright,
-con o sin ventana, le responde **"Verificación fallida, por favor intentá de nuevo"** y no
-muestra resultados. No hay un desafío que una persona pueda resolver.
+El catálogo puede pasar la búsqueda por una verificación anti-bots (`/verify-captcha`). Con un
+navegador común se resuelve sola en unos segundos ("Verificando acceso…"). El 2026-11-01, a
+Chromium controlado por Playwright le respondía **"Verificación fallida, por favor intentá de
+nuevo"** y no mostraba resultados. El 2026-11-12 la búsqueda llegó directo a los resultados y
+la prueba pasó con Chromium sin ventana.
 
 La prueba **no intenta eludir** esa verificación. Espera hasta 15 segundos los resultados o el
 rechazo; si el catálogo la rechaza, guarda la captura del rechazo y falla con este mensaje:
@@ -97,7 +111,11 @@ El catálogo de la biblioteca rechazó la búsqueda con su verificación anti-bo
 (Verificación fallida, por favor intentá de nuevo). La prueba no intenta eludirla.
 ```
 
-Comprobado el 2026-11-01: con un navegador común la búsqueda devuelve 2 resultados de
-*UML y patrones* (Craig Larman, 2a ed.), en las sedes San Rafael y Central Mendoza.
-Mientras el catálogo mantenga esta verificación, la prueba no puede pasar de forma automatizada;
-hay que consultarlo con la cátedra.
+Si el catálogo vuelve a rechazar a los navegadores automatizados, la prueba no puede pasar de
+forma automatizada; hay que consultarlo con la cátedra.
+
+## Detalle: el encabezado de resultados
+
+El encabezado "Su búsqueda retornó N resultados." contiene un enlace RSS ("Suscribirse a esta
+búsqueda"), y ese texto también forma parte del nombre accesible del encabezado. Por eso la
+prueba busca un encabezado que **contenga** "Su búsqueda retornó", sin exigir el texto exacto.
